@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-terminal-green: #00ff41;
+  --color-terminal-amber: #ffb000;
+  --color-terminal-cyan: #00ffff;
+  --color-terminal-dark: #0a0e27;
+  --color-terminal-darkest: #050814;
+
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --animate-scan: scan 8s linear infinite;
+  --animate-typing: typing 3.5s steps(40, end);
+  --animate-blink: blink 1s step-end infinite;
+  --animate-glow: glow 2s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% { transform: translateY(-100%); }
+  50% { transform: translateY(100%); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@layer base {
+  * {
+    border-color: color-mix(in srgb, var(--color-terminal-green) 20%, transparent);
+  }
+
+  body {
+    background-color: var(--color-terminal-darkest);
+    color: var(--color-terminal-green);
+    font-family: var(--font-family-mono);
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px currentColor,
+                 0 0 20px currentColor,
+                 0 0 30px currentColor;
+  }
+  
+  .text-glow-sm {
+    text-shadow: 0 0 5px currentColor,
+                 0 0 10px currentColor;
+  }
+  
+  .scanlines {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 255, 65, 0.03) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 255, 65, 0.05) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    animation: scan 8s linear infinite;
+    z-index: 2;
+  }
+  
+  .crt-effect {
+    animation: flicker 0.15s infinite;
+  }
+  
+  @keyframes flicker {
+    0% {
+      opacity: 0.98;
+    }
+    5% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 0.98;
+    }
+    15% {
+      opacity: 1;
+    }
+    20% {
+      opacity: 0.98;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .dot-pattern {
+    background-image: radial-gradient(circle, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .circuit-pattern {
+    background-image: 
+      linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  .terminal-border {
+    border: 2px solid rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.2),
+                inset 0 0 10px rgba(0, 255, 65, 0.1);
+  }
+  
+  .terminal-prompt::before {
+    content: '> ';
+    color: #00ff41;
+    font-weight: bold;
+  }
+  
+  .blink-cursor::after {
+    content: '▋';
+    animation: blink 1s step-end infinite;
+  }
+}
