@@ -56,8 +56,10 @@ export default function Home() {
             </div>
             <div className="text-left font-mono">
               <p className="text-terminal-green/60 mb-2">$ cd my-awesome-project</p>
-              <p className="text-terminal-green mb-4 terminal-prompt blink-cursor">{typedText}</p>
-              <div className="text-terminal-amber/80 text-sm space-y-1 animate-pulse">
+              <p className="text-terminal-green mb-4 terminal-prompt">
+                <span className="inline-block min-w-[280px] text-left">{typedText}<span className="blink-cursor inline-block"></span></span>
+              </p>
+              <div className="text-terminal-amber/80 text-sm space-y-1">
                 <p>✓ Generated 16 favicon sizes</p>
                 <p>✓ Created Open Graph images</p>
                 <p>✓ Optimized SEO metadata</p>

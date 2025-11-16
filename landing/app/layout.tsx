@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import GoogleAnalytics from './components/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: 'ship-toolkit | AI-Native Deployment Automation for Claude Code',
@@ -39,7 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="scanlines crt-effect">{children}</body>
+      <body className="scanlines crt-effect">
+        <GoogleAnalytics />
+        {children}
+      </body>
     </html>
   )
 }

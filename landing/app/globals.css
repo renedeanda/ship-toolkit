@@ -85,8 +85,9 @@
     background-size: 100% 4px;
     pointer-events: none;
     z-index: 1;
+    will-change: auto;
   }
-  
+
   .scanlines::after {
     content: '';
     position: absolute;
@@ -100,10 +101,13 @@
     pointer-events: none;
     animation: scan 8s linear infinite;
     z-index: 2;
+    will-change: transform;
   }
-  
+
   .crt-effect {
-    animation: flicker 0.15s infinite;
+    /* Removed flicker animation - it was causing scroll jumps */
+    /* Subtle static glow effect instead */
+    filter: contrast(1.02) brightness(1.01);
   }
   
   @keyframes flicker {
