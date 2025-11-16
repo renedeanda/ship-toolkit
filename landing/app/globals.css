@@ -41,10 +41,19 @@
     border-color: color-mix(in srgb, var(--color-terminal-green) 20%, transparent);
   }
 
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     background-color: var(--color-terminal-darkest);
     color: var(--color-terminal-green);
     font-family: var(--font-family-mono);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
   }
 }
 
@@ -62,7 +71,6 @@
   
   .scanlines {
     position: relative;
-    overflow: hidden;
   }
   
   .scanlines::before {
