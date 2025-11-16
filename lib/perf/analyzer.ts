@@ -6,6 +6,7 @@
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import { logger } from '../utils/logger.js';
+import { validateUrl } from '../utils/validation.js';
 
 export interface PerformanceMetrics {
   fcp: number; // First Contentful Paint (ms)
@@ -58,11 +59,23 @@ export async function analyzePerformance(
   url: string,
   options: LighthouseOptions = {}
 ): Promise<PerformanceAnalysis> {
-  logger.info('🔍 Running Lighthouse performance analysis...');
+  // Validate URL
+  const urlValidation = validateUrl(url);
+  if (!urlValidation.valid) {
+    throw new Error(`Invalid URL: ${urlValidation.error}`);
+  }
 
-  const chrome = await chromeLauncher.launch({
-    chromeFlags: ['--headless', '--disable-gpu', '--no-sandbox']
-  });
+  const sanitizedUrl = urlValidation.sanitized!;
+  logger.info(`🔍 Running Lighthouse performance analysis on ${sanitizedUrl}...`);
+
+  let chrome;
+  try {
+    chrome = await chromeLauncher.launch({
+      chromeFlags: ['--headless', '--disable-gpu', '--no-sandbox']
+    });
+  } catch (err) {
+    throw new Error(`Failed to launch Chrome: ${err instanceof Error ? err.message : 'Unknown error'}. Make sure Chrome/Chromium is installed.`);
+  }
 
   try {
     const opts = {
@@ -78,8 +91,8 @@ export async function analyzePerformance(
       }
     };
 
-    const runnerResult = await lighthouse(url, opts);
-    if (!runnerResult) {
+    const runnerResult = await lighthouse(sanitizedUrl, opts);
+    if (!runnerResult || !runnerResult.lhr) {
       throw new Error('Lighthouse failed to return results');
     }
 
@@ -187,11 +200,18 @@ export async function analyzePerformance(
       warnings,
     };
 
-  } catch (error) {
-    logger.error(`Failed to run Lighthouse analysis: ${error}`);
-    throw error;
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+    logger.error(`Failed to run Lighthouse analysis: ${errorMsg}`);
+    throw new Error(`Lighthouse analysis failed: ${errorMsg}`);
   } finally {
-    await chrome.kill();
+    if (chrome) {
+      try {
+        await chrome.kill();
+      } catch (killErr) {
+        logger.warn('Failed to cleanly shut down Chrome browser');
+      }
+    }
   }
 }
 

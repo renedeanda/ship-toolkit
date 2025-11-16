@@ -137,6 +137,43 @@ export const logger = {
    */
   newLine(): void {
     console.log();
+  },
+
+  /**
+   * Format an error for display
+   */
+  formatError(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    if (typeof error === 'string') {
+      return error;
+    }
+    return 'Unknown error occurred';
+  },
+
+  /**
+   * Log validation error with details
+   */
+  validationError(field: string, message: string, suggestion?: string): void {
+    console.log(chalk.red(`❌ ${field}: ${message}`));
+    if (suggestion) {
+      console.log(chalk.gray(`   💡 Suggestion: ${suggestion}`));
+    }
+  },
+
+  /**
+   * Display a file path in a readable way
+   */
+  file(path: string): string {
+    return chalk.cyan.underline(path);
+  },
+
+  /**
+   * Display command in a code block style
+   */
+  command(cmd: string): string {
+    return chalk.bgBlack.white(` ${cmd} `);
   }
 };
 

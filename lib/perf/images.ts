@@ -5,10 +5,12 @@
 
 import sharp from 'sharp';
 import fs from 'fs/promises';
+import { existsSync } from 'fs';
 import path from 'path';
 import { glob } from 'glob';
 import { logger } from '../utils/logger.js';
 import { detectFramework } from '../utils/framework-detector.js';
+import { validateProjectDirectory, validateImageDimensions } from '../utils/validation.js';
 
 export interface ImageOptimization {
   filePath: string;
@@ -57,6 +59,24 @@ export async function optimizeImages(
   projectRoot: string,
   options: OptimizationOptions = {}
 ): Promise<ImageOptimization[]> {
+  // Validate project directory
+  const dirValidation = validateProjectDirectory(projectRoot);
+  if (!dirValidation.valid) {
+    throw new Error(`Invalid project directory: ${dirValidation.error}`);
+  }
+
+  // Validate options if provided
+  if (options.maxWidth && options.maxHeight) {
+    const dimValidation = validateImageDimensions(options.maxWidth, options.maxHeight);
+    if (!dimValidation.valid) {
+      throw new Error(`Invalid image dimensions: ${dimValidation.error}`);
+    }
+  }
+
+  if (options.quality && (options.quality < 1 || options.quality > 100)) {
+    throw new Error('Quality must be between 1 and 100');
+  }
+
   logger.info('🖼️  Optimizing images...');
 
   const imagePatterns = [
