@@ -35,6 +35,17 @@ Terminal-nostalgic landing page for ship-toolkit, built with Next.js 15 and Tail
 
 ## Getting Started
 
+### Environment Variables
+
+Create a `.env.local` file to configure optional features:
+
+```bash
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+```
+
+See `.env.example` for all available options.
+
 ### Development
 
 ```bash
