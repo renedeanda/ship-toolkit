@@ -556,9 +556,7 @@ Special thanks to:
 
 ## 📬 Contact
 
-- **Twitter**: [@renedeanda](https://twitter.com/renedeanda)
 - **GitHub**: [@renedeanda](https://github.com/renedeanda)
-- **Website**: [makr.io](https://makr.io)
 
 ---
 
