@@ -1,0 +1,37 @@
+{
+  "name": "ship-toolkit",
+  "version": "1.0.0",
+  "description": "Complete web project optimization and deployment toolkit - SEO, assets, performance, and launch automation",
+  "author": {
+    "name": "Rede",
+    "url": "https://github.com/renedeanda",
+    "email": "rede@renedeanda.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renedeanda/ship-toolkit"
+  },
+  "keywords": [
+    "deployment",
+    "seo",
+    "optimization",
+    "performance",
+    "assets",
+    "favicon",
+    "open-graph",
+    "sitemap",
+    "lighthouse",
+    "indie-dev",
+    "ship-fast"
+  ],
+  "license": "MIT",
+  "engines": {
+    "claude-code": ">=1.0.0",
+    "node": ">=18.0.0"
+  },
+  "categories": [
+    "deployment",
+    "optimization",
+    "productivity"
+  ]
+}
