@@ -1,37 +1,194 @@
 {
   "name": "ship-toolkit",
   "version": "1.0.0",
-  "description": "Complete web project optimization and deployment toolkit - SEO, assets, performance, and launch automation",
+  "description": "Complete web project optimization and deployment toolkit - ship 10x faster with automated assets, SEO, performance, and deployment",
   "author": {
     "name": "Rede",
-    "url": "https://github.com/renedeanda",
-    "email": "rede@renedeanda.com"
+    "email": "rede@makr.io",
+    "url": "https://makr.io"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/renedeanda/ship-toolkit"
+    "url": "https://github.com/renedeanda/ship-toolkit.git"
   },
+  "license": "MIT",
   "keywords": [
     "deployment",
-    "seo",
     "optimization",
+    "seo",
     "performance",
     "assets",
-    "favicon",
-    "open-graph",
-    "sitemap",
+    "automation",
+    "claude-code",
+    "web-development",
     "lighthouse",
-    "indie-dev",
-    "ship-fast"
+    "vercel",
+    "netlify"
   ],
-  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "commands": [
+    {
+      "name": "ship-assets",
+      "description": "Generate favicons, OG images, PWA icons - all assets for modern web apps",
+      "file": "commands/ship-assets.md",
+      "category": "assets",
+      "estimatedTime": "30 min saved"
+    },
+    {
+      "name": "ship-seo",
+      "description": "Set up meta tags, sitemap, robots.txt - complete SEO optimization",
+      "file": "commands/ship-seo.md",
+      "category": "seo",
+      "estimatedTime": "45 min saved"
+    },
+    {
+      "name": "ship-perf",
+      "description": "Optimize images, performance, Core Web Vitals using Lighthouse",
+      "file": "commands/ship-perf.md",
+      "category": "performance",
+      "estimatedTime": "1-2 hours saved"
+    },
+    {
+      "name": "ship-deploy",
+      "description": "Deploy to Vercel/Netlify with one command",
+      "file": "commands/ship-deploy.md",
+      "category": "deployment",
+      "estimatedTime": "30 min saved"
+    },
+    {
+      "name": "ship-launch",
+      "description": "Validate 34-point launch checklist before going live",
+      "file": "commands/ship-launch.md",
+      "category": "validation",
+      "estimatedTime": "30 min saved"
+    },
+    {
+      "name": "ship-complete",
+      "description": "Run everything in sequence - complete automation workflow",
+      "file": "commands/ship-complete.md",
+      "category": "orchestration",
+      "estimatedTime": "3-4 hours saved",
+      "featured": true
+    },
+    {
+      "name": "ship-status",
+      "description": "Quick status check - what's done vs. what's missing",
+      "file": "commands/ship-status.md",
+      "category": "utility"
+    },
+    {
+      "name": "ship-preview",
+      "description": "Preview OG images, meta tags, social shares",
+      "file": "commands/ship-preview.md",
+      "category": "utility"
+    },
+    {
+      "name": "ship-export",
+      "description": "Export launch content for Twitter, Product Hunt, etc.",
+      "file": "commands/ship-export.md",
+      "category": "utility"
+    }
+  ],
+  "categories": {
+    "assets": {
+      "name": "Assets & Branding",
+      "description": "Generate and optimize all visual assets",
+      "icon": "🎨"
+    },
+    "seo": {
+      "name": "SEO Optimization",
+      "description": "Complete search engine optimization setup",
+      "icon": "🔍"
+    },
+    "performance": {
+      "name": "Performance",
+      "description": "Optimize speed and Core Web Vitals",
+      "icon": "⚡"
+    },
+    "deployment": {
+      "name": "Deployment",
+      "description": "Deploy to production platforms",
+      "icon": "🚀"
+    },
+    "validation": {
+      "name": "Validation",
+      "description": "Pre-launch validation and checklists",
+      "icon": "✅"
+    },
+    "orchestration": {
+      "name": "Orchestration",
+      "description": "Complete automated workflows",
+      "icon": "🎯"
+    },
+    "utility": {
+      "name": "Utilities",
+      "description": "Helper tools and utilities",
+      "icon": "🛠️"
+    }
+  },
+  "dependencies": {
+    "sharp": "^0.33.0",
+    "puppeteer": "^21.6.0",
+    "lighthouse": "^11.4.0",
+    "chrome-launcher": "^1.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "boxen": "^7.1.1"
+  },
   "engines": {
-    "claude-code": ">=1.0.0",
     "node": ">=18.0.0"
   },
-  "categories": [
-    "deployment",
-    "optimization",
-    "productivity"
-  ]
+  "features": {
+    "autoFix": true,
+    "stateManagement": true,
+    "resumeWorkflow": true,
+    "multipleReports": ["html", "json", "markdown"],
+    "cicdIntegration": true,
+    "frameworkSupport": [
+      "Next.js (App Router)",
+      "Next.js (Pages Router)",
+      "Vite",
+      "Vue",
+      "React (CRA)",
+      "Static Sites"
+    ],
+    "platformSupport": [
+      "Vercel",
+      "Netlify",
+      "Railway",
+      "Render",
+      "GitHub Pages"
+    ]
+  },
+  "configuration": {
+    "configFile": ".ship-toolkit/config.json",
+    "stateDir": ".ship-toolkit/",
+    "defaultTargets": {
+      "seoScore": 90,
+      "performanceScore": 90,
+      "launchScore": 70
+    }
+  },
+  "timeSavings": {
+    "perProject": "3.5 hours",
+    "percentFaster": "90%",
+    "totalAutomation": "3-4 hours → 3-5 minutes"
+  },
+  "badges": {
+    "license": "https://img.shields.io/badge/License-MIT-blue.svg",
+    "typescript": "https://img.shields.io/badge/TypeScript-5.3-blue",
+    "claudeCode": "https://img.shields.io/badge/Built%20for-Claude%20Code-purple"
+  },
+  "links": {
+    "homepage": "https://github.com/renedeanda/ship-toolkit",
+    "documentation": "https://github.com/renedeanda/ship-toolkit#readme",
+    "issues": "https://github.com/renedeanda/ship-toolkit/issues",
+    "changelog": "https://github.com/renedeanda/ship-toolkit/blob/main/CHANGELOG.md"
+  },
+  "support": {
+    "twitter": "@renedeanda",
+    "github": "@renedeanda",
+    "website": "https://makr.io"
+  }
 }

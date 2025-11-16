@@ -21,6 +21,8 @@ export interface FrameworkDetectionResult {
   outputDir: string;
   layoutFile?: string;
   configFile?: string;
+  confidence: number; // 0-1 score of detection confidence
+  typescript: boolean; // Whether TypeScript is detected
 }
 
 /**
@@ -29,28 +31,62 @@ export interface FrameworkDetectionResult {
 export async function detectFramework(projectRoot: string): Promise<FrameworkDetectionResult> {
   const packageJsonPath = join(projectRoot, 'package.json');
 
+  // Check for TypeScript
+  const hasTypeScript = existsSync(join(projectRoot, 'tsconfig.json'));
+
   // Default result for static HTML
   let result: FrameworkDetectionResult = {
     framework: 'static-html',
     hasAppDir: false,
     hasPagesDir: false,
     publicDir: 'public',
-    outputDir: 'public'
+    outputDir: 'public',
+    confidence: 0.5,
+    typescript: hasTypeScript
   };
 
   // Check if package.json exists
   if (!existsSync(packageJsonPath)) {
+    // Try to detect from directory structure anyway
+    if (existsSync(join(projectRoot, 'index.html'))) {
+      result.confidence = 0.7;
+    }
+    return result;
+  }
+
+  let packageJson: any;
+  try {
+    const content = readFileSync(packageJsonPath, 'utf-8');
+    packageJson = JSON.parse(content);
+  } catch (error) {
+    // Invalid or malformed package.json - return static HTML with low confidence
+    console.error(`Failed to parse package.json: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    result.confidence = 0.3;
     return result;
   }
 
   try {
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+    const deps = { ...(packageJson.dependencies || {}), ...(packageJson.devDependencies || {}) };
 
     // Check for Next.js
     if (deps.next) {
       const hasAppDir = existsSync(join(projectRoot, 'app'));
       const hasPagesDir = existsSync(join(projectRoot, 'pages'));
+
+      // Determine confidence based on presence of expected directories
+      let confidence = 0.9;
+      if (!hasAppDir && !hasPagesDir) {
+        confidence = 0.6; // Next.js installed but no routes yet
+      }
+
+      // Find config file
+      let configFile = 'next.config.js';
+      for (const variant of ['next.config.js', 'next.config.mjs', 'next.config.ts']) {
+        if (existsSync(join(projectRoot, variant))) {
+          configFile = variant;
+          break;
+        }
+      }
 
       result = {
         framework: hasAppDir ? 'next-app' : 'next-pages',
@@ -60,17 +96,17 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         publicDir: 'public',
         outputDir: '.next',
         layoutFile: hasAppDir ? join('app', 'layout.tsx') : undefined,
-        configFile: 'next.config.js'
+        configFile,
+        confidence,
+        typescript: hasTypeScript
       };
-
-      // Check for both .js and .ts variants
-      if (!existsSync(join(projectRoot, 'next.config.js')) &&
-          existsSync(join(projectRoot, 'next.config.mjs'))) {
-        result.configFile = 'next.config.mjs';
-      }
     }
     // Check for Vite + React
     else if (deps.vite && deps.react) {
+      const hasViteConfig = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'].some(f =>
+        existsSync(join(projectRoot, f))
+      );
+
       result = {
         framework: 'react-vite',
         version: deps.vite,
@@ -78,7 +114,9 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasPagesDir: false,
         publicDir: 'public',
         outputDir: 'dist',
-        configFile: 'vite.config.ts'
+        configFile: 'vite.config.ts',
+        confidence: hasViteConfig ? 0.95 : 0.85,
+        typescript: hasTypeScript
       };
     }
     // Check for Create React App
@@ -89,11 +127,17 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasAppDir: false,
         hasPagesDir: false,
         publicDir: 'public',
-        outputDir: 'build'
+        outputDir: 'build',
+        confidence: 0.95,
+        typescript: hasTypeScript
       };
     }
     // Check for Vue
     else if (deps.vue) {
+      const hasViteConfig = ['vite.config.ts', 'vite.config.js'].some(f =>
+        existsSync(join(projectRoot, f))
+      );
+
       result = {
         framework: 'vue',
         version: deps.vue,
@@ -101,7 +145,9 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasPagesDir: false,
         publicDir: 'public',
         outputDir: 'dist',
-        configFile: 'vite.config.ts'
+        configFile: 'vite.config.ts',
+        confidence: hasViteConfig ? 0.9 : 0.75,
+        typescript: hasTypeScript
       };
     }
     // Check for SvelteKit
@@ -113,11 +159,17 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasPagesDir: false,
         publicDir: 'static',
         outputDir: 'build',
-        configFile: 'svelte.config.js'
+        configFile: 'svelte.config.js',
+        confidence: 0.95,
+        typescript: hasTypeScript
       };
     }
     // Check for Astro
     else if (deps.astro) {
+      const hasAstroConfig = ['astro.config.mjs', 'astro.config.js', 'astro.config.ts'].some(f =>
+        existsSync(join(projectRoot, f))
+      );
+
       result = {
         framework: 'astro',
         version: deps.astro,
@@ -125,7 +177,9 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasPagesDir: false,
         publicDir: 'public',
         outputDir: 'dist',
-        configFile: 'astro.config.mjs'
+        configFile: 'astro.config.mjs',
+        confidence: hasAstroConfig ? 0.95 : 0.85,
+        typescript: hasTypeScript
       };
     }
     // Check for vanilla React (no bundler detected)
@@ -135,7 +189,9 @@ export async function detectFramework(projectRoot: string): Promise<FrameworkDet
         hasAppDir: false,
         hasPagesDir: false,
         publicDir: 'public',
-        outputDir: 'build'
+        outputDir: 'build',
+        confidence: 0.5,
+        typescript: hasTypeScript
       };
     }
   } catch (error) {
