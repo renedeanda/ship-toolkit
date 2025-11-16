@@ -1,0 +1,67 @@
+{
+  "name": "ship-toolkit",
+  "version": "1.0.0",
+  "description": "Complete web project optimization and deployment toolkit - SEO, assets, performance, and launch automation",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint lib/**/*.ts",
+    "format": "prettier --write lib/**/*.ts"
+  },
+  "keywords": [
+    "deployment",
+    "seo",
+    "optimization",
+    "performance",
+    "assets",
+    "favicon",
+    "open-graph",
+    "sitemap",
+    "lighthouse",
+    "indie-dev",
+    "ship-fast",
+    "claude-code",
+    "claude-plugin"
+  ],
+  "author": {
+    "name": "Rede",
+    "url": "https://github.com/renedeanda",
+    "email": "rede@renedeanda.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renedeanda/ship-toolkit"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "sharp": "^0.33.1",
+    "puppeteer": "^21.6.1",
+    "lighthouse": "^11.4.0",
+    "glob": "^10.3.10",
+    "fast-glob": "^3.3.2",
+    "cheerio": "^1.0.0-rc.12",
+    "js-yaml": "^4.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "boxen": "^7.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.6",
+    "@types/js-yaml": "^4.0.9",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "@types/jest": "^29.5.11",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "prettier": "^3.1.1"
+  }
+}
