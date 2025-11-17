@@ -39,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="scanlines crt-effect">
+    <html lang="en">
+      <body className="scanlines">
         <GoogleAnalytics />
         {children}
       </body>
