@@ -48,9 +48,9 @@
     "fast-glob": "^3.3.2",
     "glob": "^10.3.10",
     "js-yaml": "^4.1.0",
-    "lighthouse": "^11.4.0",
+    "lighthouse": "^13.0.1",
     "ora": "^8.0.1",
-    "puppeteer": "^21.6.1",
+    "puppeteer": "^24.0.0",
     "sharp": "^0.33.1"
   },
   "devDependencies": {
